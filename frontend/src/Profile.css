@@ -1,0 +1,103 @@
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#000000,#000000,#000000);
+  min-height:100vh;
+}
+
+.profile-container{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.user-card{
+  width:650px;
+  padding:30px;
+  border-radius:25px;
+  background:rgba(0, 0, 0, 0.9);
+  border:1px solid rgba(59,130,246,.3);
+  box-shadow:0 0 40px rgba(37,99,235,.25);
+}
+
+.user-header{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+.avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#0045db,#60a5fa);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:50px;
+  font-weight:bold;
+  box-shadow:0 0 25px #3b82f6;
+}
+
+.user-details h2{
+  color:white;
+  font-size:42px;
+  margin:0;
+}
+
+.user-details p{
+  color:#93c5fd;
+  margin:8px 0;
+  font-size:20px;
+}
+
+.badges{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
+.active-badge{
+  background:#16a34a;
+  color:white;
+  padding:8px 16px;
+  border-radius:20px;
+}
+
+.role-badge{
+  background:#1d4ed8;
+  color:white;
+  padding:8px 16px;
+  border-radius:20px;
+}
+
+hr{
+  border:none;
+  border-top:1px solid rgba(255,255,255,.1);
+  margin:25px 0;
+}
+
+.section-title{
+  color:white;
+  margin-bottom:20px;
+}
+
+.feature-box{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  margin-bottom:12px;
+  border-radius:20px;
+  background:#0f172a;
+  color:white;
+  border:1px solid rgba(28, 0, 130, 0.05);
+}
+
+.footer-text{
+  text-align:center;
+  margin-top:20px;
+  color:#94a3b8;
+}

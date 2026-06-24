@@ -1,25 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 function App() {
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    const [username, setUserName] = useState("");
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [error, setError] = useState("");
 const handleRegister = async () => {
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
           setError("Please fill all fields");
         return;
     }
 
   try {
+    console.log(username, email, password);
     const res = await fetch("http://localhost:5000/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name,
+        username,
         email,
         password,
       }),
@@ -44,19 +46,40 @@ const handleRegister = async () => {
   return (
     <div className="login-page">
       <div className="login-container">
-      <h1>Sign Up</h1>
+  
 
-      <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)}/>
-      <br /><br />
+      <h1>Create Account</h1>
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
+<input
+  type="text"
+  placeholder="Name"
+  onChange={(e) => setUserName(e.target.value)}
+/>
 
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
-      <br /><br />
+<br /><br />
 
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
-      <br /><br />
-      {error && <p className="error">{error}</p>}
+<input
+  type="email"
+  placeholder="Email"
+  onChange={(e) => setEmail(e.target.value)}
+/>
 
-      <button onClick= {handleRegister}>Register</button>
+<br /><br />
+
+<input
+  type="password"
+  placeholder="Password"
+  onChange={(e) => setPassword(e.target.value)}
+/>
+
+<br /><br />
+
+<button onClick={handleRegister}>Register</button>
+
+<div className="login-section">
+  <p>Already have an account?</p>
+  <Link to="/">Login</Link>
+</div>
     </div>
     </div>
   );
