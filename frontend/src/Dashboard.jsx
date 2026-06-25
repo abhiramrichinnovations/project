@@ -49,7 +49,6 @@ function Dashboard() {
   <Link to="/profile">👤 Profile</Link>
 </li>
 
-
     </ul>
 
     <button className="sidebar-logout" onClick={handleLogout}>

@@ -4,6 +4,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
+import Admin from "./Admin";
 
 function App() {
   return (
@@ -22,11 +23,20 @@ function App() {
       <Route
   path="/dashboard"
   element={
-    <ProtectedRoute>
+    <ProtectedRoute requiredRole="user">
       <Dashboard />
     </ProtectedRoute>
   }
 />
+
+      <Route
+  path="/admin"
+  element={
+    <ProtectedRoute requiredRole="admin">
+      <Admin />
+    </ProtectedRoute>
+  }
+  />
     </Routes>
   );
 }

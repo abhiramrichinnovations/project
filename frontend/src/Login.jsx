@@ -26,7 +26,11 @@ const handleLogin = async () => {
     })
   );
 console.log("RESULT:", result);
-  if (result.payload?.token) {
+  if (result.payload?.role === "admin") {
+    navigate("/admin");
+  }
+  else if (result.payload?.token)
+  {
     navigate("/dashboard");
   }
   console.log("Current Email:", email);
@@ -46,6 +50,7 @@ console.log("Current Password:", password);
       <br /><br />
 
       <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+      
       {error && <p className="error">{error}</p>}
       <br /><br />
 

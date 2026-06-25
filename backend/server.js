@@ -4,14 +4,18 @@ const { Pool } = require("pg");
 const cors = require("cors");
 const app = express();
 const jwt = require("jsonwebtoken");
+const { loginLimiter } = require("./dist/middleware/rateLimiter");
+const { validate } = require("./dist/middleware/validate");
+const { registerSchema, loginSchema } = require("./dist/validation/authschema");
+require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "loginapp",
-  password: "123",
-  port: 5432,
+  user: process.env.DB_USER,         
+  host: process.env.DB_HOST,        
+  database: process.env.DB_NAME,    
+  password: process.env.DB_PASSWORD, 
+  port: Number(process.env.DB_PORT), 
 });
 
 pool.connect()
@@ -21,7 +25,7 @@ pool.connect()
 app.get("/", (req, res) => {
   res.send("Backend Running");
 });
-app.post("/register", async (req, res) => {
+app.post("/register", validate(registerSchema), async (req, res) => {
   try {
     const { username, email, password } = req.body;
     console.log(req.body);
@@ -45,7 +49,7 @@ await pool.query(
     res.send("Registration Failed");
   }
 });
-  app.post("/login", async (req, res) => {
+  app.post("/login",loginLimiter,validate(loginSchema) ,async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("Login Request:", req.body);
@@ -56,7 +60,7 @@ await pool.query(
     );
 console.log("Database Result:", result.rows);
     if (result.rows.length === 0) {
-      return res.send("User Not Found");
+      return res.status(401).json({ success: false, error: "USER_NOT_FOUND" });
     }
 const isMatch = await bcrypt.compare(
    password,
@@ -66,24 +70,28 @@ const isMatch = await bcrypt.compare(
 if(isMatch) {
 
    const token = jwt.sign(
-      { email: email },
-      "secretkey",
+    {
+       email: email,
+      role: result.rows[0].role
+   } ,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
    );
 
    res.json({
       message: "Login Success",
-      token
+      token,
+       role: result.rows[0].role
    });
 }
 else {
-   res.send("Wrong Password");
+   return res.status(401).json({ success: false, error: "INVALID_CREDENTIALS" });
 }
 
 
   } catch (err) {
     console.log(err);
-    res.send("Login Failed");
+    return res.status(500).json({ success: false, error: "SERVER_ERROR" });
   }
 });
 app.get("/profile", async (req, res) => {
@@ -100,7 +108,7 @@ app.get("/profile", async (req, res) => {
 
     const decoded = jwt.verify(
       token,
-      "secretkey"
+      process.env.JWT_SECRET
     );
 
     const result = await pool.query(
@@ -129,6 +137,6 @@ app.get("/profile", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("Server running on port 5000");
 });

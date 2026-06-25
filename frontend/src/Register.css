@@ -1,0 +1,10 @@
+.error {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  padding: 0 1rem;
+  text-align: center;
+}

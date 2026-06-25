@@ -27,16 +27,21 @@ const handleRegister = async () => {
       }),
     });
 
-    const data = await res.text();
-    if (data === "User Registered Successfully")
-    {
-      setTimeout(() => {
-      navigate("/");
-    }, 2000);
+ const data = await res.text();
+
+if (data === "User Registered Successfully") {
+  setTimeout(() => {
+    navigate("/");
+  }, 2000);
+} else {
+  try {
+    const parsed = JSON.parse(data);
+    const firstError = Object.values(parsed.details || {})[0]?.[0] || parsed.error || data;
+    setError(firstError);
+  } catch {
+    setError(data); 
   }
-    else {
-    setError(data);
-  }
+}
  } catch (err) {
   console.log(err);
   alert("fetch error");
